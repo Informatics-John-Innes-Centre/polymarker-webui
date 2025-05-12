@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Request primers{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+
+<p>PolyMarker is an automated bioinformatics pipeline for SNP assay development which increases the probability
+    of generating homoeologue-specific assays for polyploid species. PolyMarker generates a multiple alignment
+    between the target SNP sequence and the selected reference genome (from the drop off menu in green below).
+    It then generates a mask with informative polymorphic positions between homoeologs which are highlighted
+    with respect to the target genome.</p>
+
+<p>See <a href="/about">About</a> to know how to prepare your input. For wheat, we have <a
+        href="/designed_primers">designed primers</a> for the iSelect 90K chip and the Axiom 820k chip.</p>
+
+<p>If your request is terminated due a timeout, try with less markers and make sure the SNPs are not in low
+    complexity regions. </p>
+
+
+<hr/>
+
+<form method="post" enctype="multipart/form-data">
+
+
+    <label for="manual_input">Manual Input</label>
+    <textarea name="manual_input" id="manual_input" placeholder="Enter your input manually">{{ request.form['manual_input'] }}</textarea>
+
+    <button name="populate_example" id="populate_example" type="button">Example</button>
+    <button name="clear" id="clear" type="button">Clear Input</button>
+
+    <script type="text/javascript">
+
+        var example_button = document.getElementById('populate_example');
+        var clear_button = document.getElementById('clear');
+        var manual_input = document.getElementById('manual_input');
+
+        example_button.onclick = function () {
+            var reference = document.getElementById('reference');
+            var selected_reference = reference.options[reference.selectedIndex].value;
+            manual_input.value = selected_reference;
+                {% for reference in references %}
+                if (selected_reference == '{{ reference[1] }}') {
+                    var reference_html = `{{ reference[3] }}`;
+                    manual_input.value = reference_html;
+                }
+                {% endfor %}
+        };
+
+        clear.onclick = function () {
+            manual_input.value = "";
+        }
+    </script>
+
+    <span style="color: red;">OR</span>
+
+    <label for="query_file">File</label>
+    <input name="query_file" id="query_file" type="file" value="{{ request.form['query_file'] }}">
+
+
+    <h3>Reference</h3>
+
+    <select name="reference" id="reference">
+        {% for reference in references %}
+        <option value="{{ reference[1] }}">{{ reference[1] }}</option>
+        {% endfor %}
+    </select>
+
+    <div id="reference_description"></div>
+
+    <script type="text/javascript">
+
+        var reference = document.getElementById('reference');
+        var reference_description = document.getElementById('reference_description');
+
+        reference.onchange = function () {
+            var selected_reference = reference.options[reference.selectedIndex].value;
+            {% for reference in references %}
+            if (selected_reference == '{{ reference[1] }}') {
+                var reference_html = `{{ reference[4]|safe }}`;
+                reference_description.innerHTML = reference_html;
+            }
+            {% endfor %}
+        };
+
+        reference.onchange();
+    </script>
+
+    <label for="email">Email</label>
+    <input name="email" id="email" type="email">
+
+    (optional)
+
+    <p>Your email will only be used to send you updates in the status of your job and will be deleted upon
+    completion.</p>
+
+
+    <input type=submit value="Create Primers">
+</form>
+
+
+{% endblock %}

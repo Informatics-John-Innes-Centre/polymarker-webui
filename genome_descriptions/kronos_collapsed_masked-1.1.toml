@@ -1,0 +1,10 @@
+name = "kronos_collapsed_masked-1.1"
+display_name = "Triticum turgidum, Kronos, (collapsed chromosomes masked) v1.1"
+path = "/home/polymarker/data/genomes/Kronos.collapsed.chromosomes.masked.v1.1/Kronos.collapsed.chromosomes.masked.v1.1.fa"
+genome_count = 2
+arm_selection = "scaffold"
+description = """
+Triticum turgidum, Kronos,(collapsed chromosomes masked) v1.1
+"""
+example = '''
+'''

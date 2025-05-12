@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Cite{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+
+<div id="main-body">
+
+    <p>If you use PolyMarker for your primer design we would appreciate that you please cite the following papers:</p>
+
+    <ul>
+        <li>Ricardo H. Ramirez-Gonzalez, Cristobal Uauy, Mario Caccamo; <em>PolyMarker: A fast polyploid primer design
+            pipeline</em>, Bioinformatics, Volume 31, Issue 12, 15 June 2015, Pages 2038–2039. doi:<a
+                href="http://dx.doi.org/10.1093/bioinformatics/btv069">10.1093/bioinformatics/btv069</a></li>
+    </ul>
+
+    <h3>Developers</h3>
+
+    <p>PolyMarker and the original PolyMarker server was developed by <a
+            href="https://www.jic.ac.uk/people/dr-ricardo-h-ramirez-gonzalez/">Ricardo H. Ramirez-Gonzalez</a> (<a
+            href="https://github.com/homonecloco">GitHub</a>) and Bijan Ghasemi Afshar (<a
+            href="https://github.com/Bijan-Ghasemi-Afshar">GitHub</a>) as part of the <a
+            href="https://www.jic.ac.uk/research-impact/designing-future-wheat/">Designing Future Wheat Institute
+        Strategic Program</a> within the <a href="https://www.jic.ac.uk/people/cristobal-uauy/">Uauy lab</a>.</p>
+
+    <hr>
+
+    <p>
+        Service is maintained by the John Innes Centre's <a href="https://www.jic.ac.uk/research-impact/technology-research-platforms/informatics/">Informatics platform</a>.
+        <a href="https://github.com/Informatics-John-Innes-Centre/polymarker-webui">polymarker-webui</a> a web interface for polymarker and replacement for polymarker server was implemented by Rob Ellis (<a href="https://github.com/cb2e6f">GitHub</a>).
+    </p>
+    <p>
+        Please could you direct all enquiries, bug reports and interesting findings which relate to this service to <a href="mailto:informatics@jic.ac.uk">JIC Informatics</a>.
+    </p>
+
+</div>
+
+{% endblock %}

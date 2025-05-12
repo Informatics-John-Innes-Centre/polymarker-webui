@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Primers for wheat SNP-Chips{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div id="main-body">
+
+    <p>The following files contain designed primers to known markers</p>
+
+    <h2>Wheat Axiom 820k</h2>
+
+    <p>The Axiom chip was developed by the WISP, for further information go <a
+            href="http://www.cerealsdb.uk.net/cerealgenomics/CerealsDB/axiom_820K_search.php">here</a></p>
+
+    <ul>
+        <li><strong><a href="https://www.polymarker.info/static/820k_axiom/all_axiom_markers_refseq.csv.zip">Located
+            against Chinese Spring RefSeq 1.0</a></strong>. The markers where extracted from <a
+                href="ftp://ftp.ensemblgenomes.org/pub/plants/release-40/vcf/triticum_aestivum/triticum_aestivum.vcf.gz">ensembl
+            plants, release 40</a>.
+        </li>
+    </ul>
+
+    <p>The primers where designed against the pseudomolecules described in IWGSC(2018)[1]. </p>
+
+    <h2>Wheat iSelect 90k</h2>
+
+    <p>The markers in this section are from the Illumina iSelect chip described in Wang (2014)[2]. </p>
+
+    <ul>
+        <li><strong><a href="https://www.polymarker.info/static/iSelect/primers_all.csv.zip">Located against
+            CSS</a></strong> 81,587 SNPs located according to the best hit to the scaffolds from the IWGSC[3]
+        </li>
+        <li><strong><a href="https://www.polymarker.info/static/iSelect/primers_in_map.csv.zip">Genetically
+            mapped</a></strong> 46,977 SNPs located according to the genetic map.
+        </li>
+    </ul>
+
+    <p>The primers were designed against the soft-masked reference as
+        released in ensembl plants IWGSC1[3]. For an updated version of the
+        primers, please look at the primers of the Wheat Axiom 820k section
+        above, which contains the SNPs in the iSelect chip. </p>
+
+    <h4>References</h4>
+
+    <p>[1]: International Wheat Genome Sequencing Consortium (2018),
+        Shifting the limits in wheat research and breeding using a fully
+        annotated reference genome. Science, 361(eaar7191). doi: <a href="http://dx.doi.org/10.1126/science.aar7191">10.1126/science.aar7191</a>
+    </p>
+
+    <p>[2]: Wang, S., Wong, D., Forrest, K., <em>et al.</em> (2014),
+        Characterization of polyploid wheat genomic diversity using a
+        high-density 90 000 single nucleotide polymorphism array. Plant
+        Biotechnology Journal, 12: 787-796. doi:<a href="http://dx.doi.org/10.1111/pbi.12183">10.1111/pbi.12183</a></p>
+
+    <p>[3]: International Wheat Genome Sequencing Consortium. (2014). A chromosome-based draft sequence of the hexaploid
+        bread wheat (<em>Triticum aestivum</em>) genome. Science, 345(6194), 1251788-1251788. doi:<a
+                href="http://dx.doi.org/10.1126/science.1251788">10.1126/science.1251788</a></p>
+
+</div>
+
+{% endblock %}

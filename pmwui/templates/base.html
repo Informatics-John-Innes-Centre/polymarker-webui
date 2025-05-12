@@ -1,0 +1,40 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - PolyMarker</title>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"dark-bottom"};
+</script>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+<!-- End Cookie Consent plugin -->
+
+<nav>
+    <h1><a href="{{ url_for('base.index') }}"><img class="logo_image" src="/static/img/logo.png"/></a></h1>
+    <ul>
+        <li><a href="{{ url_for('base.index') }}">Create Primers</a></li>
+        <li><a href="{{ url_for('base.designed_primers') }}">Primers for wheat SNP-Chips</a></li>
+        <li><a href="{{ url_for('base.about') }}">About</a></li>
+        <li><a href="{{ url_for('base.cite') }}">Cite</a></li>
+    </ul>
+</nav>
+
+<section class="content">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</section>
+
+<div class="footer">
+    <img class="logo" src="/static/img/jic.png"/>
+    <img class="logo" src="/static/img/bbsrc.png"/>
+    <img class="logo" src="/static/img/iwyp.png"/>
+    <img class="logo" src="/static/img/dfw.jpg"/>
+</div>

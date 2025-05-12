@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}About PolyMarker{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+
+<!-- Content -->
+<div id="main-body">
+
+    <p>PolyMarker is an automated bioinformatics pipeline for SNP assay
+        development which increases the probability of generating
+        homoeologue-specific assays for polyploid species. PolyMarker generates a
+        multiple alignment between the target SNP sequence and the selected
+        reference genome (from the drop off menu in green below). It then
+        generates a mask with informative polymorphic positions between
+        homoeologs which are highlighted with respect to the target genome.</p>
+
+    <p>These positions include (see figure for example):</p>
+
+    <ul>
+        <li><strong>Varietal polymorphism:</strong> this is the SNP that is targeted in the assay (&amp;)</li>
+        <li><strong>Genome specific:</strong> this is a homoeologous polymorphism which is <em>only</em> present in the
+            target genome (upper case)
+        </li>
+        <li><strong>Genome semi-specific:</strong> this is a homoeologous
+            polymorphism which is found in 2 of the 3 genomes, hence it
+            discriminates against one of the off-target genomes (lowercase)
+        </li>
+        <li><strong>Homoeologous:</strong> if the target varietal SNP is also a
+            homoeologous polymorphism between genomes (e.g. A, B and D genomes in
+            the wheat reference Chinese Spring)
+        </li>
+    </ul>
+
+    <p>PolyMarker will generate KASP assays which are based on a three
+        primer system. Two diagnostic primers incorporate the alternative
+        varietal SNP at the 3' end, but are otherwise similar (black boxed
+        primers in figure). The third common primer is preferentially selected
+        to incorporate a genome-specific base at the 3' end (red boxed primer in
+        figure), or a semi-specific base in the absence of an adequate genome
+        specific position.</p>
+
+    <p>The code of the PolyMarker pipeline is available in <a
+            href="https://github.com/Informatics-John-Innes-Centre/bio-polymarker">github</a>.</p>
+
+    <h2>Using PolyMarker</h2>
+
+    <ul>
+        <li>The input file must be uploaded as a CSV file (can be exported from Excel) with the following columns:
+
+            <ul>
+                <li><strong>Gene id</strong>: An unique identifier for the assay. It must be unique on each run</li>
+                <li><strong>Target chromosome</strong>: This will depend on the
+                    Reference sequence being used. For wheat use 1A, 2D, 7B, etc... Note
+                    that for other species you can find the exact chromosome nomenclature by
+                    generating an example in the home page (press orange “Example” button
+                    once the Reference is selected).
+                </li>
+                <li><strong>Sequence</strong>: The sequence flanking the SNP. The SNP must be marked in the format
+                    <strong>[A/T]</strong> for a varietal SNP with alternative bases, A or T.
+                </li>
+            </ul>
+        </li>
+        <li>PolyMarker takes ~1 minute per marker assuming an input sequence of
+            200 bp (with the varietal SNP in the middle). [Longer sequences can be
+            used, but this will slow down the initial BLAST against the wheat survey
+            sequence. We have not seen improvement in performance with longer
+            sequences; therefore we recommend 200-bp of input sequence. The final
+            multiple alignment for the primer design only considers 100-bp on either
+            side of the target varietal SNP.]
+        </li>
+        <li>BLAST is used to search for the contigs which align to the SNP. By
+            default, the miniumm identity used to match across the genomes it is 90%
+            and the model used is est2genome.
+        </li>
+    </ul>
+
+    <h2>Example</h2>
+
+    <h3>Input file</h3>
+
+    <p>The example input file contains three markers to design. </p>
+
+    <pre><code>1DS_1905169_Cadenza0423_2404_C2404T,1D,ccgccgtcgtatggagcaggccggccaattccttcaaggagtcaaccacctggcgcaaggaccatgaggtccatgctcacgaggtctctttcgttgacgg[C/T]aaaaacaagacggcgccaggctttgagttgctcccggctgtggtggatcaccaaggcaacccgcagccgaccttggtggggatccacgttggccatcccaa
+1DS_40060_Cadenza0423_2998_G2998A,1D,ccagcagcgcccgtcccccttctcccccgaatccgccggagcccagcggacgccggccatgagcacctccgagtagtaagtccccggcgccgccgccgcc[G/A]ccgatctttctttctttctcgcttgatttgtctgcgtttcttttgttccgggtgattgattgatgtgcgtgggctgctgcagcgactacctcttcaagctg
+1DS_1847781_Cadenza0423_2703_G2703A,1D,tttcctctcaaatgtagcttctgcagattcggtggaagggcattcaaccggagaacctcattctcatcacttgcggtcacctctaggtaggacaaaaact[G/A]catctgaataagagactcacagaggcgttcacagtagattctcttcacattcaataacctcaggcttctcatttgcctcagctctcccagttgtctaacag
+</code></pre>
+
+    <p>The input text box supports to have the table separated by TAB, so you can paste the three columns from
+        excel. </p>
+
+    <h3>Output: mask</h3>
+
+    <p>The mask contains the details of the local alignment </p>
+
+    <p><img src="static/img/mask.png" alt="Drawing"
+            style="width: 800px;"></p>
+
+    <h2>REST API</h2>
+
+    <p>PolyMarker jobs can be submitted via a REST API. To do this you need to submit a POST request to the url <code>'http://www.polymarker.info/snp_files.json'</code>
+    </p>
+
+    <p>The <code>body</code> of the request must follow the following structure:</p>
+
+    <pre><code class="json">{
+    "snp_file":
+    {
+        "reference":"RefSeq v1.0",
+        "email":""
+    },
+    "polymarker_manual_input":
+    {
+        "post":"1DS_1905169_Cadenza0423_2404_C2404T,1D,ccgccgtcgtatggagcaggccggccaattccttcaaggagtcaaccacctggcgcaaggaccatgaggtccatgctcacgaggtctctttcgttgacgg[C/T]aaaaacaagacggcgccaggctttgagttgctcccggctgtggtggatcaccaaggcaacccgcagccgaccttggtggggatccacgttggccatcccaa\n1DS_40060_Cadenza0423_2998_G2998A,1D,ccagcagcgcccgtcccccttctcccccgaatccgccggagcccagcggacgccggccatgagcacctccgagtagtaagtccccggcgccgccgccgcc[G/A]ccgatctttctttctttctcgcttgatttgtctgcgtttcttttgttccgggtgattgattgatgtgcgtgggctgctgcagcgactacctcttcaagctg\n1DS_1847781_Cadenza0423_2703_G2703A,1D,tttcctctcaaatgtagcttctgcagattcggtggaagggcattcaaccggagaacctcattctcatcacttgcggtcacctctaggtaggacaaaaact[G/A]catctgaataagagactcacagaggcgttcacagtagattctcttcacattcaataacctcaggcttctcatttgcctcagctctcccagttgtctaacag"
+    }
+}
+</code></pre>
+
+    <p>The response will contain the ID (<code>XXXXXXXXXXXXXXXXXXXX</code> in the example) of the request and the URL
+        with the link to the results as follow:</p>
+
+    <pre><code class="json">{
+    "id":"XXXXXXXXXXXXXXXXXXXX",
+    "url":"http://www.polymarker.info/snp_files/XXXXXXXXXXXXXXXXXXXX",
+    "path":"/snp_files/XXXXXXXXXXXXXXXXXXXX"
+}
+</code></pre>
+
+    <p>The valid <code>reference</code> values for this instance are:</p>
+    <pre><code>
+        {% for reference in references -%}
+        '{{ reference[1] }}'
+        {% endfor %}
+    </code></pre>
+
+</div>
+
+{% endblock %}
