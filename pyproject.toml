@@ -1,6 +1,6 @@
 [project]
 name = "pmwui"
-version = "0.0.9"
+version = "1.0.0"
 description = "A web interface for polymarker."
 dependencies = [
     "flask",
