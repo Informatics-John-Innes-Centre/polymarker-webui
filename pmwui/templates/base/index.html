@@ -43,7 +43,7 @@
             manual_input.value = selected_reference;
                 {% for reference in references %}
                 if (selected_reference == '{{ reference[1] }}') {
-                    var reference_html = `{{ reference[3] }}`;
+                    var reference_html = `{{ reference[4] }}`;
                     manual_input.value = reference_html;
                 }
                 {% endfor %}
@@ -64,7 +64,7 @@
 
     <select name="reference" id="reference">
         {% for reference in references %}
-        <option value="{{ reference[1] }}">{{ reference[1] }}</option>
+        <option value="{{ reference[1] }}">{{ reference[2] }}</option>
         {% endfor %}
     </select>
 
@@ -79,7 +79,7 @@
             var selected_reference = reference.options[reference.selectedIndex].value;
             {% for reference in references %}
             if (selected_reference == '{{ reference[1] }}') {
-                var reference_html = `{{ reference[4]|safe }}`;
+                var reference_html = `{{ reference[5]|safe }}`;
                 reference_description.innerHTML = reference_html;
             }
             {% endfor %}

@@ -14,13 +14,13 @@ bp = Blueprint('base', __name__)
 def get_references():
     db = db_get()
     cursor = db.cursor()
-    cursor.execute("SELECT id, name, description, example FROM reference")
+    cursor.execute("SELECT id, name, display_name, description, example FROM reference")
     references = cursor.fetchall()
 
     proc_ref = []
 
     for r in references:
-        proc_ref.append(r + (markdown.markdown(r[2]),))
+        proc_ref.append(r + (markdown.markdown(r[3]),))
 
     return proc_ref
 
