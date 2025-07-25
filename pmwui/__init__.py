@@ -29,7 +29,7 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
 
     try:
-        os.makedirs(app.instance_path)
+        os.makedirs(app.instance_path, exist_ok=True)
         os.makedirs(app.config['UPLOAD_DIR'])
         os.makedirs(app.config['RESULTS_DIR'])
     except OSError:
