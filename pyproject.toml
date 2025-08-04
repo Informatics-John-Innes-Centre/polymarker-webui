@@ -1,6 +1,6 @@
 [project]
 name = "pmwui"
-version = "1.0.1"
+version = "1.0.2"
 description = "A web interface for polymarker."
 dependencies = [
     "flask",
@@ -11,7 +11,8 @@ dependencies = [
     "flask_mail",
     "markdown",
     "requests",
-    "werkzeug"
+    "werkzeug",
+    "gunicorn"
 ]
 
 [build-system]
