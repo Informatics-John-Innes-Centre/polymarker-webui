@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import pathlib
 import shutil
@@ -15,6 +16,9 @@ if sys.version_info < (3, 11):
     import tomli as tomllib
 else:
     import tomllib
+
+log = logging.getLogger('gunicorn.error')
+logging.basicConfig(level=logging.INFO)
 
 
 def db_get():
@@ -48,15 +52,12 @@ def db_init():
 def generate_indexes(genome_path):
     result = subprocess.run(f"samtools faidx {genome_path}", shell=True)
     if result.returncode > 0:
-        #     # if result.returncode == 127:
-        #     #     log.info("samtools not found")
-        #     # elif result.returncode == 1:
-        #     #     log.info(f"failed to open file {path}")
+        log.critical(f"samtools faidx {genome_path} failed with exit code {result.returncode}")
         exit(result.returncode)
 
     result = subprocess.run(f"makeblastdb -dbtype 'nucl' -in {genome_path} -out {genome_path}", shell=True)
-    # result = subprocess.run(command, shell=True)
     if result.returncode > 0:
+        log.critical(f"makeblastdb {genome_path} failed with exit code {result.returncode}")
         exit(-1)
 
 
@@ -107,21 +108,21 @@ def db_gc(days):
 @click.command('init')
 def init_command():
     db_init()
-    click.echo('Initialized the database.')
+    click.echo('initialized database.')
 
 
 @click.command('import')
 @click.argument('filename')
 def import_command(filename):
     db_import(filename)
-    click.echo('Imported genome.')
+    click.echo('imported genome.')
 
 
 @click.command('gc')
 @click.argument('days', type=int)
 def gc_command(days):
     db_gc(days)
-    click.echo('Ran gc.')
+    click.echo('gc complete.')
 
 
 def init_app(app):

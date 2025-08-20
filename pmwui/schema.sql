@@ -2,9 +2,7 @@ DROP TABLE IF EXISTS reference;
 DROP TABLE IF EXISTS query;
 DROP TABLE IF EXISTS cmd_queue;
 --
--- CREATE TABLE user (id INTEGER PRIMARY KEY AUTO_INCREMENT,  username TEXT UNIQUE NOT NULL,password TEXT NOT NULL);
---
--- CREATE TABLE post (  id INTEGER PRIMARY KEY AUTO_INCREMENT,author_id INTEGER NOT NULL,created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  title TEXT NOT NULL, body TEXT NOT NULL,  FOREIGN KEY (author_id) REFERENCES user (id));
+-- Important to note that this file must not have any empty lines until the end, hence the comments.
 --
 CREATE TABLE reference (id INTEGER PRIMARY KEY AUTO_INCREMENT, name TEXT UNIQUE NOT NULL, display_name TEXT UNIQUE NOT NULL, path TEXT NOT NULL,  genome_count INTEGER NOT NULL,  arm_selection TEXT NOT NULL,  description TEXT, example TEXT);
 --

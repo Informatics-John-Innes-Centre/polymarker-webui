@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os.path
 import uuid
 
@@ -10,25 +11,32 @@ from pmwui.db import db_get
 
 bp = Blueprint('base', __name__)
 
+log = logging.getLogger('gunicorn.error')
+logging.basicConfig(level=logging.INFO)
+
 
 def get_references():
+    log.debug("fetching reference genomes")
     db = db_get()
     cursor = db.cursor()
     cursor.execute("SELECT id, name, display_name, description, example FROM reference")
     references = cursor.fetchall()
 
-    proc_ref = []
+    ref_list = []
 
     for r in references:
-        proc_ref.append(r + (markdown.markdown(r[3]),))
+        ref_list.append(r + (markdown.markdown(r[3]),))
 
-    return proc_ref
+    log.debug(f"found {len(ref_list)} reference genomes")
 
+    return ref_list
 
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == 'POST':
+
+        log.debug("POST request, submitting job to scheduler")
 
         manual_input = request.form['manual_input']
         query_file = request.files['query_file']
@@ -66,7 +74,6 @@ def index():
     return render_template('base/index.html', references=get_references())
 
 
-# may not need this
 @bp.route('/uploads/<job_id>')
 def download_file(job_id):
     return send_from_directory(current_app.config["UPLOAD_DIR"], job_id + '.csv')
@@ -108,6 +115,7 @@ def result(job_id):
             lines = f.read().splitlines()
             status = lines[-1]
     except FileNotFoundError:
-        print("status file not ready")
+        log.warning("status file not ready")
 
-    return render_template('base/results.html', job_id=job_id, status=status, qcount=current_app.scheduler.count())
+    return render_template('base/results.html', job_id=job_id, status=status,
+                           queue_len=current_app.scheduler.get_queue_len())

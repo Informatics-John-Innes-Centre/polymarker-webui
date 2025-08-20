@@ -1,18 +1,3 @@
-
-import importlib.metadata
-
-
-
-import logging
-
-log = logging.getLogger('gunicorn.error')
-logging.basicConfig(level=logging.INFO)
-
-pmwui_version = importlib.metadata.version('pmwui')
-
-
-
-
 def update_query_status(uid, status):
     dbc = db.connect()
     cursor = dbc.cursor()

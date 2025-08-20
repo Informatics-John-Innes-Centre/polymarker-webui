@@ -8,11 +8,18 @@ from flask_mail import Mail
 from pmwui.polymarker import run_pm
 from pmwui.scheduler import Scheduler
 
+log = logging.getLogger('gunicorn.error')
 logging.basicConfig(level=logging.INFO)
 
 
 def create_app(test_config=None):
+    log.info('creating pmwui flask app')
+
     app = Flask(__name__, instance_relative_config=True)
+
+    app.logger.handlers = log.handlers
+    app.logger.setLevel(log.level)
+
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE_HOST='localhost',
@@ -28,12 +35,9 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    try:
-        os.makedirs(app.instance_path, exist_ok=True)
-        os.makedirs(app.config['UPLOAD_DIR'])
-        os.makedirs(app.config['RESULTS_DIR'])
-    except OSError:
-        pass  # todo: handle this
+    os.makedirs(app.instance_path, exist_ok=True)
+    os.makedirs(app.config['UPLOAD_DIR'], exist_ok=True)
+    os.makedirs(app.config['RESULTS_DIR'], exist_ok=True)
 
     app.mail = Mail(app)
 
@@ -55,7 +59,7 @@ def create_app(test_config=None):
 
     app.scheduler = Scheduler(app.config, app, run_pm)
 
-    # hack to prevent the scheduler running for setup commands (not ideal)
+    # hack to prevent the scheduler running for utility commands
     if not ('init' in sys.argv or 'import' in sys.argv or 'gc' in sys.argv):
         app.scheduler.start()
 
