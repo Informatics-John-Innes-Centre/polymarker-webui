@@ -12,6 +12,16 @@
         src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
 <!-- End Cookie Consent plugin -->
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1F7EBJH8CG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1F7EBJH8CG');
+</script>
+
 <nav>
     <h1><a href="{{ url_for('base.index') }}"><img class="logo_image" src="/static/img/logo.png"/></a></h1>
     <ul>
