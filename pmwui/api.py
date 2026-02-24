@@ -2,7 +2,7 @@ import datetime
 import os
 import uuid
 
-from flask import Blueprint, jsonify, request, current_app, g
+from flask import Blueprint, jsonify, request, current_app
 
 from pmwui.db import db_get
 
