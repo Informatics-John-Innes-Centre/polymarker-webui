@@ -87,16 +87,13 @@
 
         reference.onchange();
     </script>
-
-    <label for="email">Email</label>
+    <label for="email">Email (optional)</label>
     <input name="email" id="email" type="email">
-
-    (optional)
-
-    <p>Your email will only be used to send you updates in the status of your job and will be deleted upon
-    completion.</p>
-
-
+    <div>
+        <p>Your email will only be used to send you updates in the status of your job and will be deleted upon
+        completion.</p>
+        <p>There are currently <b>{{ qcount }}</b> jobs in the queue.</p>
+    </div>
     <input type=submit value="Create Primers">
 </form>
 

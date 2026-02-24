@@ -4,6 +4,11 @@ dev:
 down:
 	docker compose -f dev-compose.yaml down
 
+restart: down dev
+
+logs:
+	docker compose -f dev-compose.yaml logs -f
+
 init:
 	docker compose -f dev-compose.yaml exec polymarker uv run --no-sync flask --app pmwui init
 

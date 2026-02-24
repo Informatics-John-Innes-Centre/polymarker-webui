@@ -43,7 +43,11 @@ def index():
 
         if query_file.filename == "" and manual_input == "":
             flash("No input provided.")
-            return render_template("base/index.html", references=get_references())
+            return render_template(
+                "base/index.html",
+                references=get_references(),
+                qcount=current_app.scheduler.cached_qcount,
+            )
 
         job_id = uuid.uuid4()
 
@@ -73,7 +77,11 @@ def index():
 
         return redirect(f"/results/{job_id}")
 
-    return render_template("base/index.html", references=get_references())
+    return render_template(
+        "base/index.html",
+        references=get_references(),
+        qcount=current_app.scheduler.cached_qcount,
+    )
 
 
 # may not need this
@@ -128,5 +136,5 @@ def result(job_id):
         "base/results.html",
         job_id=job_id,
         status=status,
-        qcount=current_app.scheduler.count(),
+        qcount=current_app.scheduler.cached_qcount,
     )

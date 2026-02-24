@@ -21,6 +21,11 @@ def api_references():
     return jsonify({"references": ref_names})
 
 
+@bp.route("/queue_count", methods=("GET",))
+def api_queue_count():
+    return jsonify({"queue_count": current_app.scheduler.cached_qcount})
+
+
 @bp.route("/submit", methods=("POST",))
 def api_submit():
     job_id = uuid.uuid4()

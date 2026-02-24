@@ -12,6 +12,7 @@ class Scheduler:
     work = None
 
     app = None
+    cached_qcount = 0
 
     def __init__(self, db_config, app, work):
         self.app = app
@@ -111,11 +112,11 @@ class Scheduler:
         cursor.close()
         db.close()
 
-    def count(self):
+    def update_qcount(self):
         db = self.db_get()
         cursor = db.cursor()
         cursor.execute("SELECT COUNT(*) FROM cmd_queue")
         qcount = cursor.fetchone()[0]
         cursor.close()
         db.close()
-        return qcount
+        self.cached_qcount = qcount
