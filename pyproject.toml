@@ -13,7 +13,6 @@ dependencies = [
     "werkzeug",
     "gunicorn",
     "python-dotenv>=1.2.1",
-    "flask-apscheduler>=1.13.1",
 ]
 
 [dependency-groups]

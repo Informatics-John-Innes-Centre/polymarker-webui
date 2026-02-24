@@ -46,7 +46,7 @@ def index():
             return render_template(
                 "base/index.html",
                 references=get_references(),
-                qcount=current_app.scheduler.cached_qcount,
+                qcount=current_app.scheduler.qcount(),
             )
 
         job_id = uuid.uuid4()
@@ -80,7 +80,7 @@ def index():
     return render_template(
         "base/index.html",
         references=get_references(),
-        qcount=current_app.scheduler.cached_qcount,
+        qcount=current_app.scheduler.qcount(),
     )
 
 
@@ -136,5 +136,5 @@ def result(job_id):
         "base/results.html",
         job_id=job_id,
         status=status,
-        qcount=current_app.scheduler.cached_qcount,
+        qcount=current_app.scheduler.qcount(),
     )

@@ -23,7 +23,7 @@ def api_references():
 
 @bp.route("/queue_count", methods=("GET",))
 def api_queue_count():
-    return jsonify({"queue_count": current_app.scheduler.cached_qcount})
+    return jsonify({"queue_count": current_app.scheduler.qcount()})
 
 
 @bp.route("/submit", methods=("POST",))

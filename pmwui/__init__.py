@@ -1,11 +1,9 @@
 import logging
 import os
 import sys
-import atexit
 
 from flask import Flask, jsonify
 from flask_mail import Mail
-from flask_apscheduler import APScheduler
 
 from pmwui.polymarker import run_pm
 from pmwui.scheduler import Scheduler
@@ -70,16 +68,4 @@ def create_app(test_config=None):
     if not ("init" in sys.argv or "import" in sys.argv or "gc" in sys.argv):
         app.scheduler.start()
 
-    apscheduler = APScheduler()
-    apscheduler.init_app(app)  ##
-    # schedule the scheduler counter to run every 5 seconds
-    apscheduler.add_job(
-        id="approximate_cmd_queue_count",
-        func=app.scheduler.update_qcount,
-        trigger="interval",
-        seconds=5,
-    )
-
-    apscheduler.start()
-    atexit.register(lambda: apscheduler.shutdown())
     return app
