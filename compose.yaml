@@ -1,0 +1,36 @@
+services:
+  polymarker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./genomes:/genomes
+      - ./genome-descriptions:/genome-descriptions
+      - polymarker_data:/app/instance
+    container_name: polymarker
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+  mariadb:
+    image: mariadb:11.4.2
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DATABASE_NAME}
+      MARIADB_USER: ${DATABASE_USER}
+      MARIADB_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin --user=$${MARIADB_USER} --password=$${MARIADB_PASSWORD} --host=localhost ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+volumes:
+  mariadb_data:
+  polymarker_data:

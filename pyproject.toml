@@ -2,16 +2,27 @@
 name = "pmwui"
 version = "1.0.2"
 description = "A web interface for polymarker."
+requires-python = ">= 3.9"
 dependencies = [
     "flask",
     "click",
     "mariadb",
-    "pytest",
     "tomli",
     "flask_mail",
     "markdown",
-    "requests",
-    "werkzeug"
+    "werkzeug",
+    "gunicorn",
+    "python-dotenv>=1.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
+    "ruff>=0.15.2",
+    "pytest",
+    "fawltydeps>=0.19.0",
+    "build>=1.4.0",
+    "coverage>=7.10.7",
 ]
 
 [build-system]

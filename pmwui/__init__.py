@@ -8,19 +8,20 @@ from flask_mail import Mail
 from pmwui.polymarker import run_pm
 from pmwui.scheduler import Scheduler
 
+from dotenv import load_dotenv
 logging.basicConfig(level=logging.INFO)
-
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+    load_dotenv()
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE_HOST='localhost',
-        DATABASE_USER='polymarker',
-        DATABASE_PASSWORD='',
-        DATABASE_NAME='polymarker_webui_dev',
-        UPLOAD_DIR=os.path.join(app.instance_path, 'uploads'),
-        RESULTS_DIR=os.path.join(app.instance_path, 'results'),
+        SECRET_KEY=os.getenv("SECRET_KEY", 'dev'),
+        DATABASE_HOST=os.getenv("DATABASE_HOST", 'localhost'),
+        DATABASE_USER=os.getenv("DATABASE_USER", 'polymarker'),
+        DATABASE_PASSWORD=os.getenv("DATABASE_PASSWORD", ''),
+        DATABASE_NAME=os.getenv("DATABASE_NAME", 'polymarker_webui_dev'),
+        UPLOAD_DIR=os.path.join(app.instance_path, os.getenv("UPLOAD_DIR", 'uploads')),
+        RESULTS_DIR=os.path.join(app.instance_path, os.getenv("RESULTS_DIR", 'results')),
     )
 
     if test_config is None:
@@ -34,7 +35,7 @@ def create_app(test_config=None):
         os.makedirs(app.config['RESULTS_DIR'])
     except OSError:
         pass  # todo: handle this
-
+    
     app.mail = Mail(app)
 
     @app.route('/ver')

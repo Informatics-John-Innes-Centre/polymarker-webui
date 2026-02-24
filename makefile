@@ -1,11 +1,14 @@
+dev:
+	docker compose -f dev-compose.yaml --env-file .env.example up -d --build
+
+down:
+	docker compose -f dev-compose.yaml down
+
 init:
-	flask --app pmwui init
+	docker compose -f dev-compose.yaml exec polymarker uv run --no-sync flask --app pmwui init
 
-run:
-	flask --app pmwui run
-
-debug:
-	flask --app pmwui run --debug
+import-genome:
+	docker compose -f dev-compose.yaml exec polymarker uv run --no-sync flask --app pmwui import $(FILE)
 
 test:
 	pytest
@@ -18,4 +21,4 @@ check-deps:
 	fawltydeps
 
 build:
-	python -m build --wheel
+	uv run python -m build --wheel
