@@ -20,10 +20,10 @@ class Scheduler:
 
     def db_get(self):
         db = mariadb.connect(
-            host=self.app.config['DATABASE_HOST'],
-            user=self.app.config['DATABASE_USER'],
-            password=self.app.config['DATABASE_PASSWORD'],
-            database=self.app.config['DATABASE_NAME'],
+            host=self.app.config["DATABASE_HOST"],
+            user=self.app.config["DATABASE_USER"],
+            password=self.app.config["DATABASE_PASSWORD"],
+            database=self.app.config["DATABASE_NAME"],
         )
 
         return db
@@ -36,7 +36,13 @@ class Scheduler:
                 # log.info(f"executing job: {job}")
                 try:
                     db = self.db_get()
-                    self.work(db, self.app.config['UPLOAD_DIR'], self.app.config['RESULTS_DIR'], job[1], self.app)
+                    self.work(
+                        db,
+                        self.app.config["UPLOAD_DIR"],
+                        self.app.config["RESULTS_DIR"],
+                        job[1],
+                        self.app,
+                    )
                 except Exception as exception:
                     pass  # todo: do something about errors
                     # log.info(exception)
@@ -71,7 +77,9 @@ class Scheduler:
         cursor.execute("SELECT * FROM cmd_queue WHERE status=?", ("SUB",))
         result = cursor.fetchone()
         if result is not None:
-            cursor.execute("UPDATE cmd_queue SET status=? WHERE id=?", ("GOT", result[0]))
+            cursor.execute(
+                "UPDATE cmd_queue SET status=? WHERE id=?", ("GOT", result[0])
+            )
             db.commit()
         cursor.close()
         db.close()

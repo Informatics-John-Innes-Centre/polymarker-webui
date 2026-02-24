@@ -6,7 +6,10 @@ from pmwui.mail import send_massage
 
 def get_reference_cmd_data(db, ref_id):
     cursor = db.cursor()
-    cursor.execute("SELECT path, genome_count, arm_selection FROM reference WHERE name = %s", (ref_id,))
+    cursor.execute(
+        "SELECT path, genome_count, arm_selection FROM reference WHERE name = %s",
+        (ref_id,),
+    )
     reference = cursor.fetchone()
     return reference
 
@@ -18,7 +21,6 @@ def get_query_cmd_data(db, uid):
     return reference
 
 
-
 def update_query_status(db, uid, status):
     cursor = db.cursor()
     cursor.execute("UPDATE query SET status=? WHERE uid=?", (status, uid))
@@ -27,8 +29,8 @@ def update_query_status(db, uid, status):
 
 
 def post_process_masks(src, des):
-    src_file = open(src, 'r')
-    des_file = open(des, 'w')
+    src_file = open(src, "r")
+    des_file = open(des, "w")
 
     mask = False
     skip = False
@@ -87,25 +89,24 @@ def run_pm(db, input_dir, output_dir, uid, mail_app):
 
     # log.info(os.listdir(app.static_folder))
 
-    os.rename(f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa",
-              f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa.og")
+    os.rename(
+        f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa",
+        f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa.og",
+    )
 
-    post_process_masks(f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa.og",
-                       f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa")
-
-
+    post_process_masks(
+        f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa.og",
+        f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa",
+    )
 
     query_ref = get_query_cmd_data(db, uid)
 
     if query_ref[1] != "":
-        with open(f"{output_dir}/{uid}_out/status.txt", 'r') as f:
+        with open(f"{output_dir}/{uid}_out/status.txt", "r") as f:
             lines = f.read().splitlines()
             status = lines[-1]
             with mail_app.app_context():
                 send_massage(mail_app.mail, query_ref[1], uid, status)
 
-
-
     # todo: do stuff now we are done?
     # rest_done(uid)
-

@@ -1,7 +1,7 @@
 import mariadb
 
 import pytest
-from pmwui.db import (db_get)
+from pmwui.db import db_get
 
 
 def test_get_close_db(app):
@@ -10,9 +10,9 @@ def test_get_close_db(app):
         assert db is db_get()
 
     with pytest.raises(mariadb.ProgrammingError) as e:
-        db.cursor().execute('SELECT 1')
+        db.cursor().execute("SELECT 1")
 
-    assert 'Invalid' in str(e.value)
+    assert "Invalid" in str(e.value)
 
 
 def test_init_db_command(runner, monkeypatch):
@@ -22,9 +22,9 @@ def test_init_db_command(runner, monkeypatch):
     def fake_init_db():
         Recorder.called = True
 
-    monkeypatch.setattr('pmwui.db.db_init', fake_init_db)
-    result = runner.invoke(args=['init'])
-    assert 'Initialized' in result.output
+    monkeypatch.setattr("pmwui.db.db_init", fake_init_db)
+    result = runner.invoke(args=["init"])
+    assert "Initialized" in result.output
     assert Recorder.called
 
 

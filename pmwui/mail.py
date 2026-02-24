@@ -5,10 +5,13 @@ from flask_mail import Message
 
 
 def send_massage(app_mail, to, job_id, status):
-    msg = Message(subject=f'polymarker {job_id} {status}', sender='polymarker@nbi.ac.uk',
-                  recipients=[to])
+    msg = Message(
+        subject=f"polymarker {job_id} {status}",
+        sender="polymarker@nbi.ac.uk",
+        recipients=[to],
+    )
     msg.body = f"""The current status of your request ({job_id}) is {status}
-The latest status and results (when done) are available in: {url_for('base.index')}results/{job_id}"""
+The latest status and results (when done) are available in: {url_for("base.index")}results/{job_id}"""
     app_mail.send(msg)
 
     # Need to limit the rate at which we send mails or the server will be
