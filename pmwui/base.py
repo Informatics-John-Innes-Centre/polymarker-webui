@@ -44,7 +44,7 @@ def index():
         if query_file.filename == "" and manual_input == "":
             flash("No input provided.")
             return render_template(
-                "base/index.html",
+                "base/index.jinja",
                 references=get_references(),
                 qcount=current_app.scheduler.qcount(),
             )
@@ -78,7 +78,7 @@ def index():
         return redirect(f"/results/{job_id}")
 
     return render_template(
-        "base/index.html",
+        "base/index.jinja",
         references=get_references(),
         qcount=current_app.scheduler.qcount(),
     )
@@ -99,17 +99,17 @@ def result_file(job_id, filename):
 
 @bp.route("/cite")
 def cite():
-    return render_template("base/cite.html")
+    return render_template("base/cite.jinja")
 
 
 @bp.route("/designed_primers")
 def designed_primers():
-    return render_template("base/designed_primers.html")
+    return render_template("base/designed_primers.jinja")
 
 
 @bp.route("/about")
 def about():
-    return render_template("base/about.html", references=get_references())
+    return render_template("base/about.jinja", references=get_references())
 
 
 @bp.route("/results/<job_id>")
@@ -133,7 +133,7 @@ def result(job_id):
         print("status file not ready")
 
     return render_template(
-        "base/results.html",
+        "base/results.jinja",
         job_id=job_id,
         status=status,
         qcount=current_app.scheduler.qcount(),

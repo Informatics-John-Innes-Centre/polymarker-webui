@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.jinja' %}
 
 {% block header %}
 <h1>{% block title %}Request primers{% endblock %}</h1>
@@ -26,7 +26,7 @@
 
 
     <label for="manual_input">Manual Input</label>
-    <textarea name="manual_input" id="manual_input" placeholder="Enter your input manually">{{ request.form['manual_input'] }}</textarea>
+    <textarea name="manual_input" id="manual_input" placeholder="Enter your input manually" wrap="off">{{ request.form['manual_input'] }}</textarea>
 
     <button name="populate_example" id="populate_example" type="button">Example</button>
     <button name="clear" id="clear" type="button">Clear Input</button>

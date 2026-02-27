@@ -1,7 +1,9 @@
-{% extends 'base.html' %}
+{% from "components/code_box.jinja" import code_box, copyable_code_box %}
+{% extends 'base.jinja' %}
 
 {% block header %}
   <h1>{% block title %}About PolyMarker{% endblock %}</h1>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 {% endblock %}
 
 {% block content %}
@@ -44,7 +46,7 @@
         specific position.</p>
 
     <p>The code of the PolyMarker pipeline is available in <a
-            href="https://github.com/Informatics-John-Innes-Centre/bio-polymarker">github</a>.</p>
+            href="https://github.com/Informatics-John-Innes-Centre/bio-polymarker">GitHub</a>.</p>
 
     <h2>Using PolyMarker</h2>
 
@@ -80,62 +82,85 @@
 
     <h2>Example</h2>
 
-    <h3>Input file</h3>
+    <h3>Input File</h3>
 
-    <p>The example input file contains three markers to design. </p>
+    <p>This example input file contains three markers to design. You can click the text to copy it. </p>
 
-    <pre><code>1DS_1905169_Cadenza0423_2404_C2404T,1D,ccgccgtcgtatggagcaggccggccaattccttcaaggagtcaaccacctggcgcaaggaccatgaggtccatgctcacgaggtctctttcgttgacgg[C/T]aaaaacaagacggcgccaggctttgagttgctcccggctgtggtggatcaccaaggcaacccgcagccgaccttggtggggatccacgttggccatcccaa
+    {{ copyable_code_box("""1DS_1905169_Cadenza0423_2404_C2404T,1D,ccgccgtcgtatggagcaggccggccaattccttcaaggagtcaaccacctggcgcaaggaccatgaggtccatgctcacgaggtctctttcgttgacgg[C/T]aaaaacaagacggcgccaggctttgagttgctcccggctgtggtggatcaccaaggcaacccgcagccgaccttggtggggatccacgttggccatcccaa
 1DS_40060_Cadenza0423_2998_G2998A,1D,ccagcagcgcccgtcccccttctcccccgaatccgccggagcccagcggacgccggccatgagcacctccgagtagtaagtccccggcgccgccgccgcc[G/A]ccgatctttctttctttctcgcttgatttgtctgcgtttcttttgttccgggtgattgattgatgtgcgtgggctgctgcagcgactacctcttcaagctg
-1DS_1847781_Cadenza0423_2703_G2703A,1D,tttcctctcaaatgtagcttctgcagattcggtggaagggcattcaaccggagaacctcattctcatcacttgcggtcacctctaggtaggacaaaaact[G/A]catctgaataagagactcacagaggcgttcacagtagattctcttcacattcaataacctcaggcttctcatttgcctcagctctcccagttgtctaacag
-</code></pre>
-
-    <p>The input text box supports to have the table separated by TAB, so you can paste the three columns from
+1DS_1847781_Cadenza0423_2703_G2703A,1D,tttcctctcaaatgtagcttctgcagattcggtggaagggcattcaaccggagaacctcattctcatcacttgcggtcacctctaggtaggacaaaaact[G/A]catctgaataagagactcacagaggcgttcacagtagattctcttcacattcaataacctcaggcttctcatttgcctcagctctcccagttgtctaacag""", "copyBox1") }}
+    
+    <p>The input text box supports having the table separated by TAB, so you can paste the three columns from
         excel. </p>
 
-    <h3>Output: mask</h3>
+    <h3>Output: Mask</h3>
 
-    <p>The mask contains the details of the local alignment </p>
+    <p>The mask contains the details of the local alignment. </p>
 
     <p><img src="static/img/mask.png" alt="Drawing"
             style="width: 800px;"></p>
 
     <h2>REST API</h2>
 
-    <p>PolyMarker jobs can be submitted via a REST API. To do this you need to submit a POST request to the url <code>'http://www.polymarker.info/snp_files.json'</code>
-    </p>
+    <h3> Submitting a Job </h3>
 
-    <p>The <code>body</code> of the request must follow the following structure:</p>
+    <p>PolyMarker jobs can be submitted via a REST API. To do this you need to submit a <code>POST</code> request to the url <code>http://www.polymarker.info/api/submit</code>. Here is an example of how can you submit a <code>POST</code> request to submit a job using <a href="https://curl.se/">curl</a> which you can click to copy:</p>
 
-    <pre><code class="json">{
-    "snp_file":
-    {
-        "reference":"RefSeq v1.0",
-        "email":""
-    },
-    "polymarker_manual_input":
-    {
-        "post":"1DS_1905169_Cadenza0423_2404_C2404T,1D,ccgccgtcgtatggagcaggccggccaattccttcaaggagtcaaccacctggcgcaaggaccatgaggtccatgctcacgaggtctctttcgttgacgg[C/T]aaaaacaagacggcgccaggctttgagttgctcccggctgtggtggatcaccaaggcaacccgcagccgaccttggtggggatccacgttggccatcccaa\n1DS_40060_Cadenza0423_2998_G2998A,1D,ccagcagcgcccgtcccccttctcccccgaatccgccggagcccagcggacgccggccatgagcacctccgagtagtaagtccccggcgccgccgccgcc[G/A]ccgatctttctttctttctcgcttgatttgtctgcgtttcttttgttccgggtgattgattgatgtgcgtgggctgctgcagcgactacctcttcaagctg\n1DS_1847781_Cadenza0423_2703_G2703A,1D,tttcctctcaaatgtagcttctgcagattcggtggaagggcattcaaccggagaacctcattctcatcacttgcggtcacctctaggtaggacaaaaact[G/A]catctgaataagagactcacagaggcgttcacagtagattctcttcacattcaataacctcaggcttctcatttgcctcagctctcccagttgtctaacag"
-    }
-}
-</code></pre>
 
-    <p>The response will contain the ID (<code>XXXXXXXXXXXXXXXXXXXX</code> in the example) of the request and the URL
-        with the link to the results as follow:</p>
+    {{ copyable_code_box("""curl -X POST https://www.polymarker.info/api/submit \\
+    -H \"Content-Type: application/json\" \\
+    -d '{
+        \"reference\":\"bol-1.0\",
+        \"email\":\"\",
+        \"query\":\"1DS_1905169_Cadenza0423_2404_C2404T,1D,ccgccgtcgtatggagcaggccggccaattccttcaaggagtcaaccacctggcgcaaggaccatgaggtccatgctcacgaggtctctttcgttgacgg[C/T]aaaaacaagacggcgccaggctttgagttgctcccggctgtggtggatcaccaaggcaacccgcagccgaccttggtggggatccacgttggccatcccaa\\n1DS_40060_Cadenza0423_2998_G2998A,1D,ccagcagcgcccgtcccccttctcccccgaatccgccggagcccagcggacgccggccatgagcacctccgagtagtaagtccccggcgccgccgccgcc[G/A]ccgatctttctttctttctcgcttgatttgtctgcgtttcttttgttccgggtgattgattgatgtgcgtgggctgctgcagcgactacctcttcaagctg\\n1DS_1847781_Cadenza0423_2703_G2703A,1D,tttcctctcaaatgtagcttctgcagattcggtggaagggcattcaaccggagaacctcattctcatcacttgcggtcacctctaggtaggacaaaaact[G/A]catctgaataagagactcacagaggcgttcacagtagattctcttcacattcaataacctcaggcttctcatttgcctcagctctcccagttgtctaacag\"
+    }'""", "copyBox2") }}
 
-    <pre><code class="json">{
-    "id":"XXXXXXXXXXXXXXXXXXXX",
-    "url":"http://www.polymarker.info/snp_files/XXXXXXXXXXXXXXXXXXXX",
-    "path":"/snp_files/XXXXXXXXXXXXXXXXXXXX"
-}
-</code></pre>
+    <p>The response will contain a UUID and look like the following:
 
+    {{ code_box("""{
+  \"id\": \"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\"
+}""") }}
+
+    <p> You can then view the results at <code>https://polymarker.info/results/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>.</p>
+
+    <div>
     <p>The valid <code>reference</code> values for this instance are:</p>
-    <pre><code>
-        {% for reference in references -%}
-        '{{ reference[1] }}'
+
+    <ul>
+        {% for reference in references %}
+        <li><pre><code>'{{ reference[1] }}'</pre></code></li>
         {% endfor %}
-    </code></pre>
+    </ul>
+    </div>
+
+    <h3> View All References </h3>
+    {{ copyable_code_box("curl https://www.polymarker.info/api/queue_count", "copyBox3")}}
+    <h3> View Queue Size </h3>
+    {{ copyable_code_box("curl https://www.polymarker.info/api/references", "copyBox4")}}
 
 </div>
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+    
+function copyText(boxId) {
+  const text = document.getElementById(boxId).textContent.trim();
+  console.log(JSON.stringify(text));
+  navigator.clipboard.writeText(text);
+  Toastify({
+  text: "Copied!",
+  duration: 3000,
+  newWindow: true,
+  close: true,
+  gravity: "top", // `top` or `bottom`
+  position: "right", // `left`, `center` or `right`
+  stopOnFocus: true, // Prevents dismissing of toast on hover
+  style: {
+    background: "linear-gradient(to right, #00b09b, #96c93d)",
+  },
+  onClick: function(){} // Callback after click
+}).showToast();
+}
+</script>
 {% endblock %}

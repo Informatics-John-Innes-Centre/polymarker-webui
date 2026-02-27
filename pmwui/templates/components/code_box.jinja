@@ -1,0 +1,11 @@
+{% macro code_box(content) %}
+   <div id="{{ box_id }}" style="padding-left: 10px; padding-right: 10px; border:1px solid #ccc;">
+    <pre style="overflow-x: auto;"><code>{{ content }}</code></pre>
+</div>
+{% endmacro %}
+
+{% macro copyable_code_box(content, box_id) %}
+   <div id="{{ box_id }}" title="Click to copy" onclick="copyText('{{ box_id}}')" style="padding-left: 10px; padding-right: 10px; border:1px solid #ccc;cursor:pointer;">
+    <pre style="overflow-x: auto; margin-bottom: 0.5em; margin-top: 0.5em"><code>{{ content }}</code></pre>
+</div>
+{% endmacro %}
