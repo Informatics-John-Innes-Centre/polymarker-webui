@@ -4,7 +4,7 @@ import mariadb
 
 
 class Scheduler:
-    workers = []
+    workers: list[threading.Thread] = []
     running = False
     event = threading.Event()
     sem = threading.Semaphore()
