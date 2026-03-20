@@ -42,4 +42,5 @@ COPY pyproject.toml .
 COPY uv.lock .
 COPY .python-version .
 RUN apt-get install -y libmariadb-dev && uv sync --frozen --no-dev
+EXPOSE 5000
 CMD ["uv", "run", "--no-sync", "gunicorn", "--log-level", "debug", "-w", "1", "--timeout", "600", "-b", "0.0.0.0:5000", "pmwui:create_app()"]
