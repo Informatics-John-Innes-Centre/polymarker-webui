@@ -13,7 +13,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
-        run: uv sync --dev
+        run: apt-get install libmariadb-dev && uv sync --dev
 
       - name: Ruff lint
         run: uv run ruff check .
@@ -26,7 +26,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
-        run: uv sync --dev
+        run: apt-get install libmariadb-dev && uv sync --dev
 
       - name: Ruff format check
         run: uv run ruff format . --check
@@ -39,7 +39,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
-        run: uv sync --dev
+        run: apt-get install libmariadb-dev && uv sync --dev
 
       - name: Run mypy
         run: uv run mypy .
