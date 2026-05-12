@@ -1,6 +1,8 @@
 import threading
-
+import logging
 import mariadb
+
+logger = logging.getLogger(__name__)
 
 
 class Scheduler:
@@ -87,7 +89,7 @@ class Scheduler:
         return result
 
     def submit(self, cmd):
-        # log.info("submitting job: %s", cmd)
+        logger.info(f"Submitting job {cmd}")
         db = self.db_get()
         cursor = db.cursor()
         cursor.execute("INSERT INTO cmd_queue(cmd, status) VALUES (?, ?)", (cmd, "SUB"))

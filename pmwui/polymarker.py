@@ -1,7 +1,10 @@
 import os
 import subprocess
+import logging
 
 from pmwui.mail import send_massage
+
+logger = logging.getLogger(__name__)
 
 
 def get_reference_cmd_data(db, ref_id):
@@ -57,6 +60,7 @@ def post_process_masks(src, des):
 
 
 def run_pm(db, input_dir, output_dir, uid, mail_app):
+    logger.info(f"Running job {uid}")
     query_ref = get_query_cmd_data(db, uid)
 
     # log.info("$$$$$$$$$$$$$$$$$$$$")
@@ -110,3 +114,4 @@ def run_pm(db, input_dir, output_dir, uid, mail_app):
 
     # todo: do stuff now we are done?
     # rest_done(uid)
+    logger.info(f"Completed job {uid}")
