@@ -1,3 +1,9 @@
+# 1.1.3 - 12/05/26
+
+* Fixed designed_primers page not working
+* Added logging for job queueing, starting and ending
+* Added polymarker version to web interface.
+
 # 1.1.2 - 20/03/2026
 
 * Fixed mismatched code examples for `references` and `queue_count` API endpoints.

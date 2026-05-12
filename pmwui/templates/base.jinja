@@ -23,7 +23,12 @@
 </script>
 
 <nav>
-    <h1><a href="{{ url_for('base.index') }}"><img class="logo_image" src="/static/img/logo.png"/></a></h1>
+    <h1 style="display: flex; align-items: center;">
+        <a href="{{ url_for('base.index') }}">
+            <img class="logo_image" src="/static/img/logo.png"/>
+        </a>
+        <span style="opacity: 0.6; font-weight: normal; line-height: 1; position: relative; bottom: 0.4rem;">v{{ version }}</span>
+    </h1>
     <ul>
         <li><a href="{{ url_for('base.index') }}">Create Primers</a></li>
         <li><a href="{{ url_for('base.designed_primers') }}">Primers for wheat SNP-Chips</a></li>

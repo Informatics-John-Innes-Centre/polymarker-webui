@@ -1,7 +1,7 @@
 import datetime
 import os.path
 import uuid
-
+from importlib.metadata import version
 import markdown
 from flask import (
     Blueprint,
@@ -16,7 +16,12 @@ from werkzeug.utils import redirect
 
 from pmwui.db import db_get
 
+
 bp = Blueprint("base", __name__)
+
+
+def get_version() -> str:
+    return version("pmwui")
 
 
 def get_references():
@@ -47,6 +52,7 @@ def index():
                 "base/index.jinja",
                 references=get_references(),
                 qcount=current_app.scheduler.qcount(),
+                version=get_version(),
             )
 
         job_id = uuid.uuid4()
@@ -81,6 +87,7 @@ def index():
         "base/index.jinja",
         references=get_references(),
         qcount=current_app.scheduler.qcount(),
+        version=get_version(),
     )
 
 
@@ -99,17 +106,19 @@ def result_file(job_id, filename):
 
 @bp.route("/cite")
 def cite():
-    return render_template("base/cite.jinja")
+    return render_template("base/cite.jinja", version=get_version())
 
 
 @bp.route("/designed_primers")
 def designed_primers():
-    return render_template("base/designed_primers.jinja")
+    return render_template("base/designed_primers.jinja", version=get_version())
 
 
 @bp.route("/about")
 def about():
-    return render_template("base/about.jinja", references=get_references())
+    return render_template(
+        "base/about.jinja", references=get_references(), version=get_version()
+    )
 
 
 @bp.route("/results/<job_id>")
@@ -137,4 +146,5 @@ def result(job_id):
         job_id=job_id,
         status=status,
         qcount=current_app.scheduler.qcount(),
+        version=get_version(),
     )
