@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: sudo apt-get install libmariadb-dev && uv sync --dev
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: sudo apt-get install libmariadb-dev && uv sync --dev
+
+      - name: Ruff format check
+        run: uv run ruff format . --check
+
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: sudo apt-get install libmariadb-dev && uv sync --dev
+
+      - name: Run mypy
+        run: uv run mypy .
