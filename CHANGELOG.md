@@ -1,3 +1,5 @@
+# 1.1.4 - 13/05/26
+
 * Improve logging
 * Exception in polymarker.rb will stop job execution.
 
