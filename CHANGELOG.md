@@ -1,3 +1,6 @@
+* Improve logging
+* Exception in polymarker.rb will stop job execution.
+
 # 1.1.3 - 12/05/26
 
 * Fixed designed_primers page not working

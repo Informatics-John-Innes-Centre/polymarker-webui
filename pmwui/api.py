@@ -30,8 +30,6 @@ def api_queue_count():
 def api_submit():
     job_id = uuid.uuid4()
 
-    print("submit", job_id)
-
     job_data = request.get_json()
 
     job_reference = job_data["reference"]
@@ -59,8 +57,6 @@ def api_submit():
         db_query, (job_id, job_reference, job_email, datetime.datetime.now())
     )
     db.commit()
-
-    print(current_app.scheduler)
 
     current_app.scheduler.submit(job_id)
     current_app.scheduler.poke()

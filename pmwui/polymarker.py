@@ -60,19 +60,11 @@ def post_process_masks(src, des):
 
 
 def run_pm(db, input_dir, output_dir, uid, mail_app):
-    logger.info(f"Running job {uid}")
     query_ref = get_query_cmd_data(db, uid)
-
-    # log.info("$$$$$$$$$$$$$$$$$$$$")
-    # log.info(query_ref)
-    print("rpm:", query_ref)
-    # log.info("$$$$$$$$$$$$$$$$$$$$")
+    logger.info(f"Running job {uid} against {query_ref[0]}")
 
     filename = f"{uid}.csv"
     ref_data = get_reference_cmd_data(db, query_ref[0])
-
-    # log.info(ref_data)
-    print("REFDATA:", ref_data)
 
     ref_path = ref_data[0]
     ref_genome_count = ref_data[1]
@@ -80,18 +72,12 @@ def run_pm(db, input_dir, output_dir, uid, mail_app):
 
     cmd = f"ulimit -v 6000000; polymarker.rb -m {os.path.join(input_dir, filename)} -o {output_dir}/{uid}_out -c {ref_path} -g {ref_genome_count} -a {ref_arm_selection} -A blast"
     # log.info(command)
-    result = subprocess.run(cmd, shell=True)
+    result = subprocess.run(cmd, check=True, shell=True)
 
     # log.info(result)
-    print(result)
+    logger.info(result)
 
     update_query_status(db, uid, str(result))
-
-    # log.info("_____________")
-    # log.info(app.static_folder)
-    # log.info("_____________")
-
-    # log.info(os.listdir(app.static_folder))
 
     os.rename(
         f"{output_dir}/{uid}_out/exons_genes_and_contigs.fa",
@@ -112,6 +98,4 @@ def run_pm(db, input_dir, output_dir, uid, mail_app):
             with mail_app.app_context():
                 send_massage(mail_app.mail, query_ref[1], uid, status)
 
-    # todo: do stuff now we are done?
-    # rest_done(uid)
     logger.info(f"Completed job {uid}")

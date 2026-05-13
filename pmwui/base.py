@@ -13,8 +13,8 @@ from flask import (
     abort,
 )
 from werkzeug.utils import redirect
-
 from pmwui.db import db_get
+from contextlib import suppress
 
 
 bp = Blueprint("base", __name__)
@@ -132,14 +132,12 @@ def result(job_id):
         abort(404)
 
     status = "init"
-    try:
+    with suppress(FileNotFoundError):
         with open(
             f"{current_app.config['RESULTS_DIR']}/{job_id}_out/status.txt", "r"
         ) as f:
             lines = f.read().splitlines()
             status = lines[-1]
-    except FileNotFoundError:
-        print("status file not ready")
 
     return render_template(
         "base/results.jinja",

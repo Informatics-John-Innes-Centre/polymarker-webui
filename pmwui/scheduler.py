@@ -32,10 +32,9 @@ class Scheduler:
 
     def worker(self):
         while self.running:
-            # log.info("Scheduler running")
+            logger.info("Scheduler is running")
             job = self.get()
             if job is not None:
-                # log.info(f"executing job: {job}")
                 try:
                     db = self.db_get()
                     self.work(
@@ -45,15 +44,11 @@ class Scheduler:
                         job[1],
                         self.app,
                     )
-                except Exception as exception:
-                    pass  # todo: do something about errors
-                    # log.info(exception)
-                    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# except", exception)
-                    # update_query_status(work[1], "E: " + str(exception))
+                except Exception:
+                    logger.exception(f"An error occured while executing job: {job}.")
                 self.delete(job[0])
             else:
-                # log.info("Scheduler queue empty waiting for work...")
-                print("Scheduler queue empty waiting for work...")
+                logger.info("Scheduling is waiting for work")
                 self.event.wait()
 
     def poke(self):
@@ -61,13 +56,13 @@ class Scheduler:
         self.event.clear()
 
     def start(self):
-        # log.info("Starting scheduler")
+        logger.info("Starting scheduler")
         self.running = True
         self.workers[0].start()
         self.poke()
 
     def stop(self):
-        # log.info("Stopping scheduler")
+        logger.info("Stopping scheduler")
         self.running = False
         self.poke()
         self.workers[0].join()
