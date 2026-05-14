@@ -26,6 +26,11 @@ def api_queue_count():
     return jsonify({"queue_count": current_app.scheduler.qcount()})
 
 
+@bp.route("/health")
+def health():
+    return jsonify(status="ok"), 200
+
+
 @bp.route("/submit", methods=("POST",))
 def api_submit():
     job_id = uuid.uuid4()

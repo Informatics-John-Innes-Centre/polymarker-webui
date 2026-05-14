@@ -1,4 +1,4 @@
-FROM debian:13.3
+FROM debian:13.4
 
 ENV DEBIAN_FRONTEND=noninteractive
 # default packages 
@@ -42,5 +42,7 @@ COPY pyproject.toml .
 COPY uv.lock .
 COPY .python-version .
 RUN apt-get install -y libmariadb-dev && uv sync --frozen --no-dev
-EXPOSE 5000
-CMD ["uv", "run", "--no-sync", "gunicorn", "--log-level", "info", "-w", "1", "--timeout", "600", "-b", "0.0.0.0:5000", "pmwui:create_app()"]
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health')"]
+CMD ["uv", "run", "--no-sync", "gunicorn", "--log-level", "info", "-w", "1", "--timeout", "600", "-b", "0.0.0.0:8080", "pmwui:create_app()"]
